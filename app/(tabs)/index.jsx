@@ -1,8 +1,9 @@
 import Card from '@/components/Card'
 import AppContext from '@/hooks/AppContext'
-import React, { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, } from 'react-native'
 import Search from '../../components/Search'
+import { isLive } from '../../constants/API.js'
 import data from '../../constants/data'
 
 const index = () => {
@@ -29,12 +30,21 @@ const index = () => {
       />
     ))
   }
+  
+  const server_check = async () => {
+    const live = await isLive()
+    console.log(live);
+  }
+
+  useEffect(() => {
+    server_check()
+  }, [])
 
   return (
     <ScrollView style={styles.screen} >
       <Search searchData={searchData}
       />
-     
+
 
       <TouchableOpacity
         onPress={() => {
