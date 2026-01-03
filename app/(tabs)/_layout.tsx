@@ -41,14 +41,6 @@ export default function TabLayout() {
             <MaterialCommunityIcons name="golf-cart" size={24} color="white" />,
         }}
       />
-
-      <Tabs.Screen
-        name="pay"
-        options={{
-          tabBarIcon: ({ color }) =>
-            <MaterialCommunityIcons name="golf-cart" size={24} color="white" />,
-        }}
-      />
     </Tabs>
   );
 }
