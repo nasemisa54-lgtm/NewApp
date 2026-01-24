@@ -19,9 +19,9 @@ export const fetchApi = async (route, method = 'GET', body = null) => {
         const response = await fetch(url, options);
 
         // Check if response is ok (status 200-299)
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //     throw new Error(`HTTP error! status: ${response.status}`);
+        // }
 
         // Check if response has content before parsing
         const contentType = response.headers.get('content-type');
@@ -45,4 +45,12 @@ export const fetchApi = async (route, method = 'GET', body = null) => {
 export const isLive= async () => {
     const route = "/";
     return await fetchApi(route, 'GET', null)
+}
+export const login_api= async (body) => {
+    const route = "/login";
+    return await fetchApi(route, 'post',body )
+}
+export const signup_Api= async (body) => {
+    const route = "/createuser";
+    return await fetchApi(route, 'post', body)
 }
