@@ -6,7 +6,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -38,7 +38,15 @@ export default function TabLayout() {
         name="cart"
         options={{
           tabBarIcon: ({ color }) =>
-            <MaterialCommunityIcons name="golf-cart" size={24} color="white" />,
+            <Entypo name="shopping-cart" size={24} color={color} />,
+        }}
+      />
+      
+      <Tabs.Screen
+        name="user"
+        options={{
+          tabBarIcon: ({ color }) =>
+            <FontAwesome5 name="user-cog" size={24} color={color} />,
         }}
       />
     </Tabs>

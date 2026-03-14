@@ -48,9 +48,25 @@ export const isLive= async () => {
 }
 export const login_api= async (body) => {
     const route = "/login";
-    return await fetchApi(route, 'post',body )
+    return await fetchApi(route, 'POST',body )
 }
 export const signup_Api= async (body) => {
     const route = "/createuser";
-    return await fetchApi(route, 'post', body)
+    return await fetchApi(route, 'POST', body)
+}
+export const findAllProduct= async (body) => {
+    const route = "/findAllProduct";
+    return await fetchApi(route, 'POST', body)
+}
+export const UpdateUser = async (body) => {
+    const route = "/UpdateUser";
+    return await fetchApi(route, 'POST', body)
+}
+export const createproduct = async (body) => {
+    const route = "/createproduct";
+    return await fetchApi(route, 'POST', body)
+}
+export const DeleteProduct = async (body) => {
+    const route = "/DeleteProduct";
+    return await fetchApi(route, 'DELETE', body)
 }
