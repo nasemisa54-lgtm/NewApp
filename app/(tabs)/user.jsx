@@ -61,7 +61,8 @@ const User = () => {
         const response = await signup_Api(body);
         console.log(response);
         if (response?.success) {
-            alert(JSON.stringify(response))
+            alert(response.message)
+            setuser({ ...response.user })
         } else {
             alert(JSON.stringify(response))
         }
