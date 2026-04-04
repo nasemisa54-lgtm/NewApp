@@ -7,7 +7,7 @@ const Images = {
     nagi: "https://i.pinimg.com/736x/07/5d/d2/075dd2748d0eb121b60950151ad21a18.jpg",
     otoya: "https://staticg.sportskeeda.com/editor/2024/11/2b515-17327963576668-1920.jpg?w=1460s",
     loki: "https://staticc.sportskeeda.com/editor/2023/03/fba55-16793299906465-1920.jpg?w=1200",
-    logo: require('./NSEEM TECH.png')
+    logo: 'https://github.com/nasemisa54-lgtm/NewApp/blob/main/assets/images/NSEEM%20TECH.png?raw=true'
 }
 
 export default Images
