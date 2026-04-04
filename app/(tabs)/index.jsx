@@ -1,10 +1,11 @@
-import Card from '@/components/Card'
-import AppContext from '@/hooks/AppContext'
-import { useNavigation } from 'expo-router'
-import { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Search from '../../components/Search'
-import { DeleteProduct, findAllProduct } from '../../constants/API.js'
+import Card from '@/components/Card';
+import AppContext from '@/hooks/AppContext';
+import { Ionicons } from '@expo/vector-icons'; // Import Icons
+import { useNavigation } from 'expo-router';
+import { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Search from '../../components/Search';
+import { DeleteProduct, findAllProduct } from '../../constants/API.js';
 
 const Page = () => {
   const { cart, user } = useContext(AppContext)
@@ -13,8 +14,6 @@ const Page = () => {
   const [products, setProducts] = useState([])
   const [filterdata, setfilterdata] = useState([])
   const [loading, setLoading] = useState(true)
-
-  // حالة التعديل (Edit Mode)
   const [isEditing, setIsEditing] = useState(false)
 
   const searchData = (text) => {
@@ -39,28 +38,21 @@ const Page = () => {
     }
   }
 
-  // حذف المنتج من الواجهة (UI)
   const handleRemoveItem = async (id) => {
-    // استخدام confirm الخاصة بالمتصفح
     const confirmed = window.confirm("هل أنت متأكد أنك تريد مسح هذا البرودكت؟ 🗑️");
 
     if (confirmed) {
       try {
-        // استدعاء الـ API الخاص بك
         const response = await DeleteProduct({ _id: id });
-
         if (response.success) {
-          // تحديث الواجهة بعد النجاح
           const updated = filterdata.filter(item => (item._id || item.id) !== id);
           setfilterdata(updated);
           setProducts(updated);
-          console.log("Deleted successfully 😎");
         } else {
           alert("خطأ: فشلت عملية الحذف من السيرفر ❌");
         }
       } catch (error) {
         console.error("Delete error:", error.message);
-        alert("حدث خطأ أثناء محاولة الحذف");
       }
     }
   };
@@ -77,63 +69,110 @@ const Page = () => {
     return filterdata.map((item) => (
       <Card
         key={item._id || item.id}
-        {...item} // نمرر كل بيانات المنتج
+        {...item}
         isEditing={isEditing}
         onDelete={() => handleRemoveItem(item._id || item.id)}
       />
     ))
   }
 
-  console.log("👤",user);
-  
-
   return (
-    <ScrollView style={styles.screen}>
-      <Search searchData={searchData} />
+    <View style={{ flex: 1 }}>
+      {/* --- Header Section --- */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate('user')}>
+          <Ionicons name="person-circle-outline" size={32} color="white" />
+        </TouchableOpacity>
 
-      {
-        user?.isAdmin &&
-        <View style={styles.buttonContainer}>
-          {/* زر التعديل / الإيقاف */}
-          <TouchableOpacity
-            onPress={() => setIsEditing(!isEditing)}
-            style={[styles.btn, isEditing && { backgroundColor: '#ff4444' }]}
-          >
-            <Text style={styles.btnText}>{isEditing ? "Done" : "Edit List"}</Text>
-          </TouchableOpacity>
+        <Text style={styles.headerTitle}>Store</Text>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CreateProduct')}
-            style={[styles.btn, styles.createBtn]}
-          >
-            <Text style={styles.btnText}>+ Create Product</Text>
-          </TouchableOpacity>
-        </View>
-      }
+        <TouchableOpacity onPress={() => navigation.navigate('cart')} style={styles.cartContainer}>
+          <Ionicons name="cart-outline" size={30} color="white" />
+          {cart?.length > 0 && (
+            <View style={styles.cartBadge}>
+              <Text style={styles.cartBadgeText}>{cart.length}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      </View>
 
-      {loading ? (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#ffffff" />
-        </View>
-      ) : (
-        renderData()
-      )}
-    </ScrollView>
+      <ScrollView style={styles.screen}>
+        <Search searchData={searchData} />
+
+        {user?.isAdmin && (
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={() => setIsEditing(!isEditing)}
+              style={[styles.btn, isEditing && { backgroundColor: '#ff4444' }]}
+            >
+              <Text style={styles.btnText}>{isEditing ? "Done" : "Edit List"}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CreateProduct')}
+              style={[styles.btn, styles.createBtn]}
+            >
+              <Text style={styles.btnText}>+ Create Product</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {loading ? (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size="large" color="#ffffff" />
+          </View>
+        ) : (
+          renderData()
+        )}
+      </ScrollView>
+    </View>
   )
 }
 
 export default Page
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 60, // Adjust for status bar
+    paddingBottom: 20,
+    backgroundColor: '#333',
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  cartContainer: {
+    position: 'relative',
+  },
+  cartBadge: {
+    position: 'absolute',
+    right: -5,
+    top: -5,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    width: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartBadgeText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
   screen: {
     flex: 1,
     backgroundColor: "gray",
-    paddingTop: 70,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginBottom: 20,
+    marginVertical: 20,
   },
   btn: {
     width: 160,

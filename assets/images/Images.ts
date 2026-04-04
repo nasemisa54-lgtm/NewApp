@@ -5,13 +5,9 @@ const Images = {
     nccafe: "https://m.media-amazon.com/images/I/8187Jv5hanS._AC_SL1500_.jpg",
     bachira: require("./bachira.webp"),
     nagi: "https://i.pinimg.com/736x/07/5d/d2/075dd2748d0eb121b60950151ad21a18.jpg",
-    otoya:"https://staticg.sportskeeda.com/editor/2024/11/2b515-17327963576668-1920.jpg?w=1460s",
-    loki:"https://staticc.sportskeeda.com/editor/2023/03/fba55-16793299906465-1920.jpg?w=1200,"
-
-
-
-
-
+    otoya: "https://staticg.sportskeeda.com/editor/2024/11/2b515-17327963576668-1920.jpg?w=1460s",
+    loki: "https://staticc.sportskeeda.com/editor/2023/03/fba55-16793299906465-1920.jpg?w=1200",
+    logo: require('./NSEEM TECH.png')
 }
 
 export default Images
