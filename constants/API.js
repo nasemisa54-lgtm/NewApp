@@ -1,5 +1,5 @@
-// export const baseUrl = "https://nseemapp-server.onrender.com";
-export const baseUrl = "http://192.168.68.136:8000";
+export const baseUrl = "https://nseemapp-server.onrender.com";
+// export const baseUrl = "http://192.168.68.136:8000";
 
 export const fetchApi = async (route, method = 'GET', body = null) => {
     try {

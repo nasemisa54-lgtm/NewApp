@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
         width: size.width, // يمكنك تكبير أو تصغير الشعار من هنا
         height: size.width,
         resizeMode:'contain',
-        borderRadius:100
+        borderRadius:'100%'
     },
 });
