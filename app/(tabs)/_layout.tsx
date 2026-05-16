@@ -5,10 +5,13 @@ import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
+import AppContext from '@/hooks/AppContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { useContext } from 'react';
 
 export default function TabLayout() {
+  const { user } = useContext(AppContext)
   const colorScheme = useColorScheme();
 
   return (
@@ -41,7 +44,7 @@ export default function TabLayout() {
             <Entypo name="shopping-cart" size={24} color={color} />,
         }}
       />
-      
+
       <Tabs.Screen
         name="user"
         options={{
@@ -49,6 +52,15 @@ export default function TabLayout() {
             <FontAwesome5 name="user-cog" size={24} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="oreders"
+        options={{
+          // href: user?.isAdmin ? '/oreders' : null,
+          tabBarIcon: ({ color }) =>
+            <AntDesign name="menu-fold" size={24} color={color} />,
+        }}
+      />
     </Tabs>
   );
+
 }

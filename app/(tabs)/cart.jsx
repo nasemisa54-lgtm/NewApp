@@ -5,8 +5,9 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity
 import CardCart from '../../components/cardcart';
 
 const Page = () => {
-  const { cart } = useContext(AppContext);
+  const { cart, user } = useContext(AppContext);
   const nav = useRouter();
+  
 
   // حالات الكوبون والخصم
   const [couponCode, setCouponCode] = useState('');
@@ -32,7 +33,17 @@ const Page = () => {
   const finalTotal = getTotal() - discount;
 
   const buy = () => {
-    nav.push({ pathname: "/pay" });
+    if (user?._id) {
+      nav.push({
+        pathname: "/pay",
+        params: { total: getTotal().toFixed(2) }
+
+      });
+    }
+    else {
+      confirm("please log in your acount\ndo you whant to go to login")
+      confirm && nav.replace('/user')
+    }
   };
 
   return (

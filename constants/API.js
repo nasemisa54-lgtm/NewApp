@@ -1,4 +1,5 @@
-export const baseUrl = "https://nseemapp-server.onrender.com";
+// export const baseUrl = "https://nseemapp-server.onrender.com";
+export const baseUrl = "http://localhost:8000";
 // export const baseUrl = "http://192.168.68.136:8000";
 
 export const fetchApi = async (route, method = 'GET', body = null) => {
@@ -42,20 +43,20 @@ export const fetchApi = async (route, method = 'GET', body = null) => {
         // Re-throw to allow caller to handle the error
         throw error;
     }
-}; 
-export const isLive= async () => {
+};
+export const isLive = async () => {
     const route = "/";
     return await fetchApi(route, 'GET', null)
 }
-export const login_api= async (body) => {
+export const login_api = async (body) => {
     const route = "/login";
-    return await fetchApi(route, 'POST',body )
+    return await fetchApi(route, 'POST', body)
 }
-export const signup_Api= async (body) => {
+export const signup_Api = async (body) => {
     const route = "/createuser";
     return await fetchApi(route, 'POST', body)
 }
-export const findAllProduct= async (body) => {
+export const findAllProduct = async (body) => {
     const route = "/findAllProduct";
     return await fetchApi(route, 'POST', body)
 }
@@ -67,7 +68,26 @@ export const createproduct = async (body) => {
     const route = "/createproduct";
     return await fetchApi(route, 'POST', body)
 }
+export const createOrder = async (body) => {
+    const route = "/createOrder";
+    return await fetchApi(route, 'POST', body)
+}
 export const DeleteProduct = async (body) => {
     const route = "/DeleteProduct";
     return await fetchApi(route, 'DELETE', body)
 }
+
+export const getOrders = async (body) => {
+    const route = "/getOrders";
+    return await fetchApi(route, 'POST', body)
+}
+
+export const updateOrder = async (body) => {
+    const route = "/updateOrder";
+    return await fetchApi(route, 'POST', body);
+};
+
+export const deleteOrder = async (body) => {
+    const route = "/deleteOrder";
+    return await fetchApi(route, 'DELETE', body);
+};

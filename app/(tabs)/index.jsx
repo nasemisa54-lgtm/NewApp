@@ -27,6 +27,8 @@ const Page = () => {
     try {
       setLoading(true)
       const response = await findAllProduct({})
+      console.log(response);
+      
       if (response.success) {
         setProducts(response.data)
         setfilterdata(response.data)
@@ -123,7 +125,7 @@ const Page = () => {
           </View>
         ) : (
           renderData()
-        )}
+           )}
       </ScrollView>
     </View>
   )

@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useContext, useMemo, useState } from "react";
 import {
     KeyboardAvoidingView,
@@ -13,6 +13,7 @@ import {
     View
 } from "react-native";
 import AppContext from "../hooks/AppContext";
+import { createOrder } from './../constants/API';
 
 /* Utility: strip non-digits */
 const onlyDigits = (s = "") => s.replace(/\D+/g, "");
@@ -42,6 +43,8 @@ function detectBrand(number) {
 }
 
 const Page = () => {
+    const params = useLocalSearchParams()
+    console.log(params);
     const [cardNumber, setCardNumber] = useState("");
     const [name, setName] = useState("");
     const [expiry, setExpiry] = useState("");
@@ -53,8 +56,8 @@ const Page = () => {
         expiry: false,
         cvv: false,
     });
-    
-    const { setcart } = useContext(AppContext);
+
+    const { setcart, user, cart } = useContext(AppContext);
     const nav = useRouter();
 
     const handleCardChange = (text) => {
@@ -106,7 +109,7 @@ const Page = () => {
             setTouched({ cardNumber: true, name: true, expiry: true, cvv: true });
             return;
         }
-        setModalVisible(true);
+        // setModalVisible(true);
     };
 
     const handleCloseModal = () => {
@@ -116,6 +119,33 @@ const Page = () => {
     };
 
     const brand = detectBrand(cardNumber);
+
+    const handlePayment = async () => {
+        onPay()
+        // Validation
+        if (!cardNumber || !expiry || !cvv || !name) {
+            console.log(cart);
+            alert("خطأ", "يرجى إدخال كافة بيانات الدفع");
+            return;
+        }
+
+        // Prepare order data
+        // We assume 'products' is passed as a JSON string via params
+        const orderData = {
+            user,
+            products: cart || [],
+            totalAmount: parseFloat(params.total) || 0
+        };
+
+        const result = await createOrder(orderData);
+        console.log("result", result);
+
+        if (!result.error) {
+            setcart([])
+            alert("تم بنجاح \nتمت عملية الدفع وإنشاء الطلب بنجاح");
+            nav.replace('/'); // Redirect to home or success screen
+        }
+    };
 
     return (
         <SafeAreaView style={styles.safe}>
@@ -198,7 +228,7 @@ const Page = () => {
 
                     <TouchableOpacity
                         style={[styles.payButton, !isValid ? styles.payButtonDisabled : null]}
-                        onPress={onPay}
+                        onPress={handlePayment}
                         disabled={!isValid}
                     >
                         <Text style={styles.payButtonText}>Pay Now</Text>
@@ -220,9 +250,9 @@ const Page = () => {
                         </View>
                         <Text style={styles.modalTitle}>تم الشراء بنجاح</Text>
                         <Text style={styles.modalSubText}>شكراً لتسوقك معنا، تم تأكيد طلبك.</Text>
-                        
-                        <TouchableOpacity 
-                            style={styles.closeButton} 
+
+                        <TouchableOpacity
+                            style={styles.closeButton}
                             onPress={handleCloseModal}
                         >
                             <Text style={styles.closeButtonText}>العودة للرئيسية</Text>
@@ -263,7 +293,7 @@ const styles = StyleSheet.create({
     payButton: { backgroundColor: colors.accent, padding: 16, borderRadius: 10, alignItems: "center", marginTop: 20 },
     payButtonDisabled: { backgroundColor: "#444" },
     payButtonText: { color: "#fff", fontWeight: "700", fontSize: 18 },
-    
+
     /* Modal Styles */
     modalOverlay: {
         flex: 1,
